@@ -1,8 +1,7 @@
 import { getTrends } from "./services.js";
-
-const filmWeek = document.querySelector('.film-week');
-
+import renderOthers from "./renderOthers.js";
 const firstRender = (film) => {
+    const filmWeek = document.querySelector('.film-week');
     filmWeek.innerHTML = `
     <div class="container film-week__container" data-rating="${film.vote_average}">
         <div class="film-week__poster-wrapper">
@@ -14,10 +13,12 @@ const firstRender = (film) => {
         <a class="film-week__watch-trailer tube" href="https://youtu.be/V0hagz_8L3M" aria-label="смотреть трейлер"></a>
     </div> ` 
 }
+
 const renderFilm = async () => {
     const data = await getTrends();
-    console.log(data.results);
-    firstRender(data.results[0]);
+    const [firstFilm, ...otherFilms] = data.results;
+    otherFilms.length = 16;
+    firstRender(firstFilm);
+    renderOthers(otherFilms);
 }
-
 export default renderFilm;
